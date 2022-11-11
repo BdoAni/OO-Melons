@@ -7,6 +7,7 @@ class AbstractMelonOrder:
         self.order_type=None # this is a fanctioon which one you can reuse in different orders like Domestic or International
         self.tax=None # tax is also changable it depence which order you are creating Domestic or International. It is much easy to reuse
         self.country_code = country_code
+      
         
 
 
@@ -26,7 +27,7 @@ class DomesticMelonOrder(AbstractMelonOrder):
     def get_total(self):                                        
         """Calculate price, including tax."""
 
-        base_price = 5                                              
+        base_price = 5 *1.5                                             
         total = (1 + self.tax) * self.qty * base_price  #total=(1+.08) * (4*5)= 21.6
         #    order3 =(1+0.08)*6*5= 32.4 
 
@@ -50,14 +51,20 @@ class InternationalMelonOrder:
         self.shipped = False
         self.order_type = "international"
         self.tax = 0.17
+        self.flat_fee= 3
 
     def get_total(self):
         """Calculate price, including tax."""
 
-        base_price = 5
-        total = (1 + self.tax) * self.qty * base_price
+        base_price = (5*1.5)
+    
+                # total = (1 + self.tax) * self.qty * base_price
         #order3 =(1+0.17)*6*5= 35.1 
-
+        if self.qty<10:
+            total=((1 + self.tax) * self.qty * base_price)+3
+            return total
+        else:
+            total = (1 + self.tax) * self.qty * base_price
         return total
 
     def mark_shipped(self):
@@ -69,6 +76,7 @@ class InternationalMelonOrder:
         """Return the country code."""
 
         return self.country_code
+   
 
 # class AbstractMelonOrder(InternationalMelonOrder):
 #     """holds common vars"""
